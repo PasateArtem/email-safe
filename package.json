@@ -1,0 +1,11 @@
+{
+  "name": "email-safe",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "npm test --workspaces",
+    "sync-caniemail": "node scripts/sync-caniemail.js"
+  }
+}

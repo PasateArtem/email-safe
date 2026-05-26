@@ -1,0 +1,21 @@
+{
+  "name": "eslint-plugin-email-safe",
+  "version": "0.1.0",
+  "description": "ESLint plugin that warns about Tailwind CSS classes unsupported in email clients",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test tests/",
+    "sync": "node ../../scripts/sync-caniemail.js"
+  },
+  "keywords": ["eslint", "eslint-plugin", "email", "tailwind", "outlook", "gmail"],
+  "license": "MIT",
+  "peerDependencies": {
+    "eslint": ">=8.0.0"
+  },
+  "dependencies": {
+    "caniemail": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0"
+  }
+}

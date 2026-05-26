@@ -4,7 +4,7 @@ const preferPxUnits   = require('./rules/prefer-px-units')
 const plugin = {
   meta: {
     name: 'eslint-plugin-email-safe',
-    version: '0.1.0',
+    version: '0.1.3',
   },
 
   rules: {
@@ -15,7 +15,7 @@ const plugin = {
   configs: {},
 }
 
-// Recommended конфіг — застосовується до email файлів
+// Recommended config — applies to email files
 plugin.configs.recommended = {
   plugins: { 'email-safe': plugin },
   rules: {
@@ -24,7 +24,7 @@ plugin.configs.recommended = {
   },
 }
 
-// Strict конфіг — все це помилки, не варнінги
+// Strict config — all issues as errors
 plugin.configs.strict = {
   plugins: { 'email-safe': plugin },
   rules: {

@@ -1,6 +1,6 @@
 {
   "name": "tailwind-email-safe",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tailwind CSS plugin with email-safe utilities and MSO/Outlook support",
   "main": "src/index.js",
   "keywords": [

@@ -1,0 +1,60 @@
+name: Email Client Compatibility Monitor
+
+on:
+  # Щопонеділка о 9:00 UTC
+  schedule:
+    - cron: '0 9 * * 1'
+  # Або вручну через Actions tab
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    name: Check email client CSS changes
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          npm install --prefix packages/agent
+          npm install --prefix packages/eslint-plugin-email-safe
+
+      - name: Run monitoring agent
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+        run: node packages/agent/src/index.js
+
+      - name: Check for compat matrix changes
+        id: check_changes
+        run: |
+          if git diff --quiet packages/eslint-plugin-email-safe/src/data/compat.js; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request if matrix changed
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update email compat matrix [bot]'
+          title: '🤖 Email compat matrix update'
+          body: |
+            Автоматичне оновлення compat матриці від AI агента.
+
+            Агент знайшов зміни в підтримці CSS в email клієнтах.
+            Перевір diff перед merge.
+          branch: 'bot/compat-update'
+          labels: 'automated, compat-matrix'

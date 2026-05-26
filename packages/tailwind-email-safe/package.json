@@ -1,0 +1,22 @@
+{
+  "name": "tailwind-email-safe",
+  "version": "0.1.0",
+  "description": "Tailwind CSS plugin with email-safe utilities and MSO/Outlook support",
+  "main": "src/index.js",
+  "keywords": [
+    "tailwindcss",
+    "tailwind-plugin",
+    "email",
+    "outlook",
+    "mso",
+    "react-email"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "tailwindcss": ">=3.0.0"
+  },
+  "devDependencies": {
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.19"
+  }
+}

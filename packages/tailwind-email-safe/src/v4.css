@@ -1,0 +1,33 @@
+/* Tailwind v4 підтримка — підключай через @import */
+/* @import "tailwind-email-safe/src/v4.css"; */
+
+@utility mso-hide {
+  mso-hide: all;
+}
+
+@utility mso-lh-exact {
+  mso-line-height-rule: exactly;
+}
+
+@utility email-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  mso-table-lspace: 0pt;
+  mso-table-rspace: 0pt;
+}
+
+@utility email-img {
+  border: 0;
+  outline: none;
+  text-decoration: none;
+  -ms-interpolation-mode: bicubic;
+  display: block;
+}
+
+@utility email-td {
+  border-collapse: collapse;
+  mso-line-height-rule: exactly;
+}
+
+@custom-variant email (&);
+@custom-variant mso (@media all and (-ms-high-contrast: none));

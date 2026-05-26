@@ -1,6 +1,6 @@
-// AUTO-GENERATED — не редагуй вручну
-// Оновлюється через: node scripts/sync-caniemail.js
-// Джерело: caniemail.com (останнє оновлення: 2025-09-09 18:08:06 +0000)
+// AUTO-GENERATED — do not edit manually
+// Update by running: node scripts/sync-caniemail.js
+// Source: caniemail.com (last updated: 2025-09-09 18:08:06 +0000)
 
 module.exports = {
   "flex": {

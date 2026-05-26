@@ -1,14 +1,14 @@
 /**
- * Генерує src/data/compat.js з актуальних даних caniemail
- * Запуск: node scripts/sync-caniemail.js
+ * Generates src/data/compat.js from the latest caniemail data
+ * Run: node scripts/sync-caniemail.js
  */
 
 const { rawData } = require('caniemail')
 const fs = require('fs')
 const path = require('path')
 
-// Маппінг: caniemail slug → Tailwind class patterns
-// Зліва caniemail slug, справа масив Tailwind паттернів що використовують цю CSS фічу
+// Mapping: caniemail slug → Tailwind class patterns
+// Left: caniemail slug, Right: Tailwind patterns that use this CSS feature
 const SLUG_TO_TAILWIND = {
   // Flexbox
   'css-display-flex':   ['flex', 'inline-flex'],
@@ -21,7 +21,7 @@ const SLUG_TO_TAILWIND = {
   'css-display-grid':   ['grid', 'inline-grid'],
   'css-grid-template':  ['grid-cols-*', 'grid-rows-*', 'col-span-*', 'col-start-*', 'col-end-*', 'row-span-*'],
 
-  // Gap (потребує flex або grid)
+  // Gap (requires flex or grid)
   'css-gap':            ['gap-*', 'gap-x-*', 'gap-y-*'],
 
   // Border
@@ -33,7 +33,7 @@ const SLUG_TO_TAILWIND = {
   'css-conic-gradient': ['bg-conic-*'],
   'css-radial-gradient':['bg-radial-*'],
 
-  // Animations/Transitions
+  // Animations / Transitions
   'css-animation':      ['animate-*'],
   'css-transition':     ['transition', 'transition-*', 'duration-*', 'ease-*', 'delay-*'],
 
@@ -66,25 +66,24 @@ const SLUG_TO_TAILWIND = {
   'css-box-shadow':     ['shadow', 'shadow-*'],
 }
 
-// Клієнти які перевіряємо — ключові для email
-// Формат: { clientSlug, platform }
+// Target email clients to check
 const TARGET_CLIENTS = [
-  { client: 'outlook', platform: 'windows',      label: 'Outlook Windows' },
-  { client: 'gmail',   platform: 'desktop-webmail', label: 'Gmail'        },
-  { client: 'gmail',   platform: 'mobile-webmail',  label: 'Gmail Mobile' },
+  { client: 'outlook', platform: 'windows',         label: 'Outlook Windows' },
+  { client: 'gmail',   platform: 'desktop-webmail',  label: 'Gmail'          },
+  { client: 'gmail',   platform: 'mobile-webmail',   label: 'Gmail Mobile'   },
 ]
 
-// Витягує статус підтримки останньої версії
+// Returns support status of the latest tested version
 function getLatestSupport(versionMap) {
   if (!versionMap) return 'unknown'
   const versions = Object.keys(versionMap)
   if (versions.length === 0) return 'unknown'
   const latest = versions[versions.length - 1]
-  // Прибираємо посилання на нотатки (#1, #2 тощо)
+  // Strip note references (#1, #2, etc.)
   return versionMap[latest].replace(/\s*#\d+/g, '').trim()
 }
 
-// Будує compat matrix
+// Builds the compat matrix
 function buildCompatMatrix() {
   const matrix = {}
 
@@ -100,7 +99,8 @@ function buildCompatMatrix() {
       if (support === 'n') unsupportedIn.push(label)
     }
 
-    if (unsupportedIn.length === 0) continue  // підтримується всюди — пропускаємо
+    // Skip if supported everywhere
+    if (unsupportedIn.length === 0) continue
 
     for (const pattern of patterns) {
       matrix[pattern] = {
@@ -115,7 +115,6 @@ function buildCompatMatrix() {
   return matrix
 }
 
-// Зберігаємо результат
 const outputPath = path.resolve(
   __dirname,
   '../packages/eslint-plugin-email-safe/src/data/compat.js'
@@ -123,14 +122,14 @@ const outputPath = path.resolve(
 
 const matrix = buildCompatMatrix()
 
-const content = `// AUTO-GENERATED — не редагуй вручну
-// Оновлюється через: node scripts/sync-caniemail.js
-// Джерело: caniemail.com (останнє оновлення: ${rawData.last_update_date})
+const content = `// AUTO-GENERATED — do not edit manually
+// Update by running: node scripts/sync-caniemail.js
+// Source: caniemail.com (last updated: ${rawData.last_update_date})
 
 module.exports = ${JSON.stringify(matrix, null, 2)}
 `
 
 fs.writeFileSync(outputPath, content)
 
-console.log(`✓ Згенеровано ${Object.keys(matrix).length} небезпечних паттернів`)
-console.log(`✓ Збережено в ${outputPath}`)
+console.log(`✓ Generated ${Object.keys(matrix).length} unsafe patterns`)
+console.log(`✓ Saved to ${outputPath}`)

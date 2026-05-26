@@ -3,25 +3,25 @@ const plugin = require('tailwindcss/plugin')
 module.exports = plugin(
   function ({ addUtilities, addVariant, matchUtilities, theme }) {
 
-    // ─── MSO / Outlook утиліти ────────────────────────────────────────────
+    // ─── MSO / Outlook utilities ──────────────────────────────────────────
 
     addUtilities({
-      // Ховає елемент тільки в Outlook
+      // Hides element from Outlook only
       '.mso-hide': {
         'mso-hide': 'all',
       },
-      // Фіксує міжрядковий інтервал (Outlook ігнорує line-height без цього)
+      // Fixes line-height rendering (Outlook ignores line-height without this)
       '.mso-lh-exact': {
         'mso-line-height-rule': 'exactly',
       },
-      // Email-safe таблиця — обнуляє всі дефолтні відступи Outlook
+      // Email-safe table — resets all default Outlook table spacing
       '.email-table': {
         'border-collapse': 'collapse',
         'border-spacing': '0',
         'mso-table-lspace': '0pt',
         'mso-table-rspace': '0pt',
       },
-      // Email-safe img — прибирає зазори під картинками в Outlook
+      // Email-safe img — removes gaps under images in Outlook
       '.email-img': {
         'border': '0',
         'outline': 'none',
@@ -29,26 +29,26 @@ module.exports = plugin(
         '-ms-interpolation-mode': 'bicubic',
         'display': 'block',
       },
-      // Fallback шрифт для Outlook коли підключений web font
+      // Fallback font for Outlook when a web font is loaded
       '.mso-font-fallback': {
         'mso-font-alt': 'Arial, sans-serif',
       },
-      // Padding fix — Outlook додає зайвий padding до td
+      // Padding fix — Outlook adds extra padding to td elements
       '.email-td': {
         'border-collapse': 'collapse',
         'mso-line-height-rule': 'exactly',
       },
-      // Центрує email в Outlook
+      // Centers email layout in Outlook
       '.email-center': {
         'margin': '0 auto',
         'mso-element': 'paragraph-border-art',
       },
     })
 
-    // ─── Динамічні MSO утиліти ────────────────────────────────────────────
+    // ─── Dynamic MSO utilities ────────────────────────────────────────────
 
     // mso-w-600 → { mso-width-percentage, width }
-    // Використовується коли треба задати ширину специфічно для Outlook
+    // Use when you need to set width specifically for Outlook
     matchUtilities(
       {
         'mso-w': (value) => ({
@@ -66,7 +66,7 @@ module.exports = plugin(
       }
     )
 
-    // mso-p-{size} → padding з MSO-специфічним reset
+    // mso-p-{size} → padding with MSO-specific reset
     matchUtilities(
       {
         'mso-p': (value) => ({
@@ -77,18 +77,17 @@ module.exports = plugin(
       { values: theme('spacing') }
     )
 
-    // ─── Варіанти ─────────────────────────────────────────────────────────
+    // ─── Variants ─────────────────────────────────────────────────────────
 
-    // email: — маркер що цей стиль для email контексту
-    // Корисно для documentation і майбутніх tooling інтеграцій
+    // email: — marks styles intended for email context
+    // Useful for documentation and future tooling integrations
     addVariant('email', '&')
 
-    // mso: — стиль тільки для Outlook (через CSS hack)
-    // Outlook підтримує mso-hide:all але ігнорує display:none в певних місцях
+    // mso: — styles targeting Outlook only (via CSS hack)
     addVariant('mso', '@media all and (-ms-high-contrast: none)')
   },
 
-  // ─── Доповнення до теми ────────────────────────────────────────────────
+  // ─── Theme extensions ──────────────────────────────────────────────────
   {
     theme: {
       extend: {
@@ -98,7 +97,7 @@ module.exports = plugin(
           'email-serif': ['Georgia', 'Times New Roman', 'serif'],
           'email-mono':  ['Courier New', 'Courier', 'monospace'],
         },
-        // Стандартні email ширини
+        // Standard email widths
         maxWidth: {
           'email-sm': '480px',
           'email-md': '600px',

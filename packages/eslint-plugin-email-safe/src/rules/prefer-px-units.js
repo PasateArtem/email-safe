@@ -1,20 +1,20 @@
 /**
- * Правило: prefer-px-units
- * Попереджає про arbitrary values з rem/em/vh/vw в email контексті
+ * Rule: prefer-px-units
+ * Warns about arbitrary values using rem/em/vh/vw in email class names
  */
 
 const UNSAFE_UNITS = ['rem', 'em', 'vh', 'vw', 'vmin', 'vmax']
-// Матчить arbitrary values: w-[2rem], text-[1.5em], h-[100vh]
+// Matches arbitrary values: w-[2rem], text-[1.5em], h-[100vh]
 const ARBITRARY_REGEX = /\[([^\]]+)\]/
 
 module.exports = {
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Рекомендує px замість rem/em/vh/vw в email класах',
+      description: 'Recommends px instead of rem/em/vh/vw in email class names',
     },
     messages: {
-      preferPx: '"{{cls}}" використовує {{unit}} — в email краще px. Outlook не підтримує {{unit}} одиниці.',
+      preferPx: '"{{cls}}" uses {{unit}} — px is recommended in emails. Outlook does not support {{unit}} units.',
     },
   },
 
@@ -24,7 +24,7 @@ module.exports = {
         if (node.name.name !== 'className') return
         if (!node.value) return
 
-        const raw = context.getSourceCode().getText(node.value)
+        const raw = (context.sourceCode ?? context.getSourceCode()).getText(node.value)
         const classes = raw.split(/\s+/)
 
         for (const cls of classes) {

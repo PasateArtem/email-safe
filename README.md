@@ -1,5 +1,7 @@
 # email-safe
 
+[![RepoRanker](https://reporanker.com/badge/PasateArtem/email-safe)](https://reporanker.com/repo/PasateArtem/email-safe)
+
 > Tailwind CSS + ESLint tools for email-safe HTML. AI-maintained compatibility matrix.
 
 **The problem:** Tailwind classes like `flex`, `grid`, `rounded-lg`, `animate-*` silently break in Outlook and Gmail. Litmus costs $500/mo to catch this.
